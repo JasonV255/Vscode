@@ -1,0 +1,36 @@
+bool hasWon(enum Stone board[][15], int size, bool isFirstPlayerTurn) {
+    //BEGIN TODO
+    int i,j;
+    for(i=0;i<size;i++)
+	{
+		for(j=0;j<size;j++)
+		{
+			if(board[i][j]!=NA)
+			{
+			    char a=board[i][j];
+				if (board[i-1][j]!=a&&board[i+1][j]==a&&board[i+2][j]==a&&board[i+3][j]==a&&board[i+4][j]==a&&board[i+5][j]!=a)
+				{
+				    if(board[i-1][j]!=NA&&board[i+5][j]!=NA)return false;
+					else return true;
+				}
+				else if(board[i][j-1]!=a&&board[i][j+1]==a&&board[i][j+2]==a&&board[i][j+3]==a&&board[i][j+4]==a&&board[i][j+5]!=a)
+				{
+					if(board[i][j-1]!=NA&&board[i][j+5]!=NA)return false;
+					else return true;
+				}
+                else if(board[i-1][j-1]!=a&&board[i+1][j+1]==a&&board[i+2][j+2]==a&&board[i+3][j+3]==a&&board[i+4][j+4]==a&&board[i+5][j+5]!=a)
+                {
+					if(board[i-1][j-1]!=NA&&board[i+5][j+5]!=NA)return false;
+					else return true;
+				}
+                else if(board[i-1][j+1]!=a&&board[i+1][j-1]==a&&board[i+2][j-2]==a&&board[i+3][j-3]==a&&board[i+4][j-4]==a&&board[i+5][j-5]!=a)
+                {
+					if(board[i-1][j+1]!=NA&&board[i+5][j-5]!=NA)return false;
+					else return true;
+				}
+			}
+		}
+	}
+	return false;
+    //END TODO
+}

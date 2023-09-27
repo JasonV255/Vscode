@@ -1,0 +1,7 @@
+Wifi connection:
+https://arduino-esp8266.readthedocs.io/en/2.5.2/esp8266wifi/readme.html#quick-start
+
+Python connection:
+https://www.youtube.com/watch?v=KxR3pXDkzdc
+
+
