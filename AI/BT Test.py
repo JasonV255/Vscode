@@ -1,46 +1,39 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
-# Define the function f(x) and its derivative f'(x)
-def f(x):
-    return 3 * x**3 - 2 * x - 7
+# Load the Iris dataset
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
+# You can also download the dataset and save it locally if needed.
 
-def df(x):
-    return 9 * x**2 - 2
+# Define column names
+column_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'variety']
 
-# Implement Newton's method to find the root
-def newton_method(f, df, x0, tol=0.001, max_iter=1000):
-    x = x0
-    iterations = 0
-    while iterations < max_iter:
-        x_new = x - f(x) / df(x)
-        if abs(x_new - x) < tol:
-            return x_new, iterations
-        x = x_new
-        iterations += 1
-    return None, iterations
+# Read the CSV file into a pandas DataFrame
+iris_df = pd.read_csv(url, names=column_names)
 
-# Initial guess for Newton's method
-x0 = 1.0
+# Display the first few rows of the dataset to verify it was loaded correctly
+print(iris_df.head())
 
-# Find the root using Newton's method
-root, iterations = newton_method(f, df, x0)
+# Visualize the data (scatter plot)
+plt.figure(figsize=(10, 6))
 
-if root is not None:
-    print(f"Root found at x = {root} after {iterations} iterations.")
-else:
-    print("Newton's method did not converge.")
+# Create separate DataFrames for each variety
+setosa_df = iris_df[iris_df['variety'] == 'Iris-setosa']
+versicolor_df = iris_df[iris_df['variety'] == 'Iris-versicolor']
+virginica_df = iris_df[iris_df['variety'] == 'Iris-virginica']
 
-# Create a graph of the function and Newton's method iterations
-x = np.linspace(-2, 2, 400)
-y = f(x)
-plt.plot(x, y, label='f(x) = 3x^3 - 2x - 7')
-plt.axhline(0, color='black', linestyle='-')
-plt.axvline(0, color='black', linestyle='-')
-plt.scatter(root, 0, color='red', marker='o', label='Root')
-plt.xlabel('x')
-plt.ylabel('f(x)')
-plt.legend()
+# Plot sepal length vs. sepal width
+plt.scatter(setosa_df['sepal_length'], setosa_df['sepal_width'], label='Setosa', marker='o')
+plt.scatter(versicolor_df['sepal_length'], versicolor_df['sepal_width'], label='Versicolor', marker='s')
+plt.scatter(virginica_df['sepal_length'], virginica_df['sepal_width'], label='Virginica', marker='^')
 
-# Save the graph as a PNG file
-plt.savefig('newton_method_graph.png', dpi=300)
+# Add labels and a legend
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Sepal Width (cm)')
+plt.legend(loc='best')
+plt.title('Sepal Length vs. Sepal Width')
+
+# Show the plot
+#plt.show()
+plt.savefig('petal.png', dpi=300)
