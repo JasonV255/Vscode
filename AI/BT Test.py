@@ -1,39 +1,43 @@
-import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
 
+# Load the wine dataset
+df = pd.read_csv('./Data/wine.csv')
 
+# Assume the first column is the target and the rest are features
+X = df.iloc[:, 1:].values
+y = df.iloc[:, 0].values
 
-#iris_df = pd.read_csv('D:\\CB\\AI\\iris.csv')
+# Standardize the features to have mean=0 and variance=1
+sc = StandardScaler()
+X = sc.fit_transform(X)
 
-# Define column names
-column_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'variety']
+# Compute the covariance matrix
+cov_matrix = np.cov(X.T)
 
-# Read the CSV file into a pandas DataFrame
-iris_df = pd.read_csv('D:\\CB\\AI\\iris.csv', names=column_names)
+# Compute the eigenvalues and eigenvectors of the covariance matrix
+eigenvalues, eigenvectors = np.linalg.eig(cov_matrix)
 
-# Display the first few rows of the dataset to verify it was loaded correctly
-print(iris_df.head())
+# Sort the eigenvalues and corresponding eigenvectors in decreasing order
+idx = np.argsort(eigenvalues)[::-1]
+eigenvalues = eigenvalues[idx]
+eigenvectors = eigenvectors[:, idx]
 
-# Visualize the data (scatter plot)
-plt.figure(figsize=(10, 6))
+# Take the first 2 principal components
+n_components = 2
+eigenvectors = eigenvectors[:, :n_components]
 
-# Create separate DataFrames for each variety
-setosa_df = iris_df[iris_df['variety'] == 'Iris-setosa']
-versicolor_df = iris_df[iris_df['variety'] == 'Iris-versicolor']
-virginica_df = iris_df[iris_df['variety'] == 'Iris-virginica']
+# Transform the data
+X_pca = np.dot(X, eigenvectors)
 
-# Plot sepal length vs. sepal width
-plt.plot(setosa_df['sepal_length'], setosa_df['sepal_width'], label='Setosa', marker='.')
-plt.plot(versicolor_df['sepal_length'], versicolor_df['sepal_width'], label='Versicolor', marker='s')
-plt.plot(virginica_df['sepal_length'], virginica_df['sepal_width'], label='Virginica', marker='^')
+print('Explained variation per principal component: {}'.format(eigenvalues[:n_components]/np.sum(eigenvalues)))
 
-# Add labels and a legend
-plt.xlabel('Sepal Length (cm)')
-plt.ylabel('Sepal Width (cm)')
-plt.legend(loc='best')
-plt.title('Sepal Length vs. Sepal Width')
-
-# Show the plot
-#plt.show()
-plt.savefig('petal.png', dpi=300)
+# Create a scatter plot of the transformed data
+plt.figure(figsize=(8, 6))
+plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y)
+plt.xlabel('First Principal Component')
+plt.ylabel('Second Principal Component')
+plt.title('PCA Scatter Plot')
+plt.show()
