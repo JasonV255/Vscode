@@ -1,7 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-data = pd.read_csv('score_updated.csv')
+# Load dataset
+df = pd.read_csv('./Data/score_updated.csv')
+df = df.dropna()
+df.head()
 
 def loss_function(m, b, points):
     total_error = 0
