@@ -37,9 +37,9 @@ epochs = 10000
 for i in range(epochs):
     if i % 500 == 0:
         print(f'epochs = {i}')
-    m, b = gradient_descent(m, b, data, L)
+    m, b = gradient_descent(m, b, df, L)
 print(m, b)
 
-plt.scatter(data.Hours, data.Scores)
+plt.scatter(df.Hours, df.Scores)
 plt.plot(list(range(1,10)), [m * x + b for x in range(1,10)], color = "red")
 plt.show()
