@@ -1,16 +1,17 @@
-from pymodbus.client.serial import SerialClient
+from pymodbus.client.serial import ModbusSerialClient
 
 # Modbus slave address of your battery system
 slave_address = 0x01
 
 # Configure serial port (replace with your RS485 adapter's port)
-port = "/dev/ttyUSB0"
+#port = "/dev/ttyUSB0"
+port= "COM20"
 
 # Baud rate (common baud rates for Modbus RTU are 9600, 19200, 38400)
 baudrate = 9600
 
 # Create Modbus client
-client = SerialClient(method="rtu", port=port, baudrate=baudrate)
+client = ModbusSerialClient(method="rtu", port=port, baudrate=baudrate)
 
 # Read battery voltage (assuming register address 0x01)
 read_data = client.read_holding_registers(0x01, 1)
